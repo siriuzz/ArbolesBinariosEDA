@@ -220,11 +220,12 @@ int main()
 			cout << "Digite el numero que desea insertar: ";
 			cin >> dato;
 			if (!ValidarNumero(dato)) {
-				cout << "Solo se pueden insertar numeros, intente de nuevo" << endl;
+				cout << "Solo se pueden insertar numeros (positivos), intente de nuevo" << endl;
 				break;
 			}
 
 			Insertar(arbol, stoi(dato), NULL);
+			cout << "Numero agregado correctamente!" << endl;
 			break;
 		case 2:
 			cout << "Digite el numero del nodo que desea eliminar: ";
