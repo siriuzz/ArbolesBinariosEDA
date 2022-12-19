@@ -35,10 +35,10 @@ void insertarNodo(Nodo*& arbol, int n, Nodo* padre) {
 	else {
 		int datoRaiz = arbol->dato;
 		if (n < datoRaiz) {
-			insertarNodo(arbol->izq, n, padre);
+			insertarNodo(arbol->izq, n, arbol);
 		}
 		else {
-			insertarNodo(arbol->der, n, padre);
+			insertarNodo(arbol->der, n, arbol);
 		}
 	}
 }
@@ -76,6 +76,15 @@ bool busqueda(Nodo* arbol, int n) {
 
 #pragma endregion
 
+void preOrder(Nodo* arbol) {
+	if (arbol == NULL) return;
+	else {
+		cout << arbol->dato << " - ";
+		preOrder(arbol->izq);
+		preOrder(arbol->der);
+	}
+}
+
 #pragma region funciones auxialiares eliminar
 Nodo* minimo(Nodo* arbol) {
 	if (arbol == NULL) return NULL;
@@ -90,11 +99,15 @@ Nodo* minimo(Nodo* arbol) {
 
 void reemplazar(Nodo* arbol, Nodo* nuevoNodo) {
 	if (arbol->padre) {
-		if (arbol->dato = arbol->padre->izq->dato) {
-			arbol->padre->izq = nuevoNodo;
+		if (arbol->padre->izq) {
+			if (arbol->dato == arbol->padre->izq->dato) {
+				arbol->padre->izq = nuevoNodo;
+			}
 		}
-		else if (arbol->dato == arbol->padre->der->dato) {
-			arbol->padre->der = nuevoNodo;
+		if (arbol->padre->der) {
+			if (arbol->dato == arbol->padre->der->dato) {
+				arbol->padre->der = nuevoNodo;
+			}
 		}
 	}
 	if (nuevoNodo) {
@@ -155,16 +168,21 @@ int main()
 	string opcion;
 
 	insertarNodo(arbol, 10, NULL);
-	insertarNodo(arbol, 8, NULL);
-	insertarNodo(arbol, 7, NULL);
-	insertarNodo(arbol, 9, NULL);
+	insertarNodo(arbol, 5, NULL);
+	insertarNodo(arbol, 15, NULL);
+	insertarNodo(arbol, 20, NULL);
 	insertarNodo(arbol, 12, NULL);
-	insertarNodo(arbol, 11, NULL);
+	insertarNodo(arbol, 30, NULL);
+	insertarNodo(arbol, 8, NULL);
+	insertarNodo(arbol, 3, NULL);
+	insertarNodo(arbol, 9, NULL);
+	insertarNodo(arbol, 6, NULL);
+	insertarNodo(arbol, 7, NULL);
 
 
 
 	do {
-		cout << "(1)Insertar\n(2)Eliminar\n(3)Mostrar\n(4)Buscar\n>>";
+		cout << "(1)Insertar\n(2)Eliminar\n(3)Mostrar\n(4)Buscar\n(5)Recorrido (PreOrder)\n>>";
 		cin >> opcion;
 
 		switch (stoi(opcion)) {
@@ -195,19 +213,12 @@ int main()
 
 			}
 			break;
+
+		case 5:
+			preOrder(arbol);
+			break;
 		}
 		system("PAUSE");
 		system("CLS");
-	} while (stoi(opcion) != 5);
+	} while (stoi(opcion) != 6);
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
