@@ -1,5 +1,15 @@
-// ArbolesBinariosEDA.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/*
+Enunciado: Realizar un programa C++ que permita gestionar un Árbol Binario de Búsqueda
+
+Participantes:
+1- John Luis Del Rosario Sánchez - ID 1106940
+2- Ashly Marisell Paula Ynoa - ID 1108023
+3- Elián Matos Díaz - ID 1106901
+4- Juan Daniel Ubiera Méndez - ID 1107248
+5- Kelvin Arístides García Espinal - ID 1107646
+
+Fecha de entrega: 12/12/2022
+*/
 
 #include <iostream>
 #include <string>
