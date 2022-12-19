@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <stdlib.h>
 using namespace std;
 
 
@@ -17,7 +18,7 @@ Nodo* arbol = NULL;
 
 #pragma region crear e insertar nodo
 //crea el nodo que se desea insertar en el arbol
-Nodo* crearNodo(int n, Nodo* padre) {
+Nodo* CrearNodo(int n, Nodo* padre) {
 	Nodo* nuevo_nodo = new Nodo(); //apartar espacio en memoria
 
 	//propiedades del nuevo nodo
@@ -30,81 +31,79 @@ Nodo* crearNodo(int n, Nodo* padre) {
 }
 
 //busca la posicion donde insertar el nodo (recursiva)
-void insertarNodo(Nodo*& arbol, int n, Nodo* padre) {
+void Insertar(Nodo*& arbol, int n, Nodo* padre) {
 	if (arbol == NULL) { //si el arbol esta vacio o se ha llegado a la posicion deseada
-		Nodo* nuevo_nodo = crearNodo(n, padre);
+		Nodo* nuevo_nodo = CrearNodo(n, padre);
 		arbol = nuevo_nodo;
 	}
 	else { //si el arbol no esta vacio o no se ha llegado a la posicion correspondiente
 		int datoRaiz = arbol->dato;
 		if (n < datoRaiz) { //si el dato es menor que la raiz, izquierda
-			insertarNodo(arbol->izq, n, arbol);
+			Insertar(arbol->izq, n, arbol);
 		}
 		else { //si el dato es mayor que la raiz, derecha
-			insertarNodo(arbol->der, n, arbol);
+			Insertar(arbol->der, n, arbol);
 		}
 	}
 }
 #pragma endregion
 
-#pragma region mostrar arbol
 //muestra los nodos del arbol (recursiva)
-void mostrarArbol(Nodo* arbol, int contador) {
+void MostrarArbol(Nodo* arbol, int contador) {
 	if (arbol == NULL) { //se llega a un elemento hoja, o el arbol esta vacio
 		return;
 	}
 	else { //primero se despliega la parte derecha, luego la raiz, y por ultimo la parte izquierda
-		mostrarArbol(arbol->der, contador + 1); //parte derecha
+		MostrarArbol(arbol->der, contador + 1); //parte derecha
 		for (int i = 0; i < contador; i++) { //tantos espacios como diga el contador
 			cout << "  ";
 		}
 		cout << arbol->dato << endl; //raiz
-		mostrarArbol(arbol->izq, contador + 1); //parte izquierda
+		MostrarArbol(arbol->izq, contador + 1); //parte izquierda
 	}
 }
-#pragma endregion
 
-#pragma region busqueda de un nodo
 //busca un dato en el arbol binario de busqueda (recursiva)
-bool busqueda(Nodo* arbol, int n) {
+bool Busqueda(Nodo* arbol, int n) {
 	if (arbol == NULL) return false; //se llega a un elemento hoja sin encontrar el dato
 	else if (arbol->dato == n) { //se encuentra el dato
 		return true;
 	}
 	else if (n < arbol->dato) { //el dato es menor que la raiz del arbol, izquierda
-		return busqueda(arbol->izq, n);
+		return Busqueda(arbol->izq, n);
 	}
 	else if (n > arbol->dato) { //el dato es mayor que la raiz del arbol, derecha
-		return busqueda(arbol->der, n);
+		return Busqueda(arbol->der, n);
 	}
 }
 
-#pragma endregion
 //recorre el arbol con el recorrido preorder (recursiva)
-void preOrder(Nodo* arbol) {
+void PreOrder(Nodo* arbol) {
 	if (arbol == NULL) return;
 	else {
 		cout << arbol->dato << " - ";
-		preOrder(arbol->izq);
-		preOrder(arbol->der);
+		PreOrder(arbol->izq);
+		PreOrder(arbol->der);
 	}
 }
 
+
+
 #pragma region funciones auxialiares eliminar
 //busca el valor minimo de un arbol (recursivo)
-Nodo* minimo(Nodo* arbol) {
+Nodo* Minimo(Nodo* arbol) {
 	if (arbol == NULL) return NULL; //en el caso de que no se encuentre un minimo (arbol sin ramas)
 
 	if (arbol->izq) { //se sigue buscando el minimo a la izquierda
-		return minimo(arbol->izq);
+		return Minimo(arbol->izq);
 	}
 	else { //si ya no hay ramas a la izquierda, encontramos el minimo
 		return arbol;
 	}
 }
 
-//
-void reemplazar(Nodo* arbol, Nodo* nuevoNodo) {
+//reemplaza las propiedades del nodo padre
+void Reemplazar(Nodo* arbol, Nodo* nuevoNodo) {
 	//si el nodo a eliminar tiene un padre
 	if (arbol->padre) { 
 		if (arbol->padre->izq) { //se verifica que el padre tenga una rama a la izquierda
@@ -128,7 +127,7 @@ void reemplazar(Nodo* arbol, Nodo* nuevoNodo) {
 }
 
 //vuelve NULL las propiedades del nodo y lo elimina
-void destruirNodo(Nodo* nodo) {
+void DestruirNodo(Nodo* nodo) {
 	nodo->izq = NULL;
 	nodo->der = NULL;
 
@@ -138,99 +137,133 @@ void destruirNodo(Nodo* nodo) {
 
 #pragma region eliminar nodo
 //administra las condiciones que se deben dar para cada caso de eliminacion de un nodo
-void eliminarNodo(Nodo* eliminar) {
+void EliminarNodo(Nodo* eliminar) {
 	if (eliminar->izq && eliminar->der) { //nodo con rama izquierda y derecha != NULL
-		Nodo* menor = minimo(eliminar->der);
+		Nodo* menor = Minimo(eliminar->der);
 		eliminar->dato = menor->dato;
-		eliminarNodo(menor);
+		EliminarNodo(menor);
 	}
 	else if (eliminar->izq) { //nodo solo con rama a la izquierda
-		reemplazar(eliminar, eliminar->izq);
-		destruirNodo(eliminar);
+		Reemplazar(eliminar, eliminar->izq);
+		DestruirNodo(eliminar);
 	}
 	else if (eliminar->der) { //nodo solo con rama a la derecha
-		reemplazar(eliminar, eliminar->der);
-		destruirNodo(eliminar);
+		Reemplazar(eliminar, eliminar->der);
+		DestruirNodo(eliminar);
 	}
 	else { //nodo sin ramas
-		reemplazar(eliminar, NULL);
-		destruirNodo(eliminar);
+		Reemplazar(eliminar, NULL);
+		DestruirNodo(eliminar);
 	}
 }
 
 //busca el nodo que se desea eliminar
-void eliminar(Nodo* arbol, int n) {
-	if (arbol == NULL) { //si el arbol esta vacio
+void Eliminar(Nodo* arbol, int n) {
+	if (arbol == NULL) { //si el arbol esta vacio o no se encontró el valor
+		cout << "Nodo no encontrado en el arbol binario" << endl;
 		return;
 	}
 	else if (n < arbol->dato) { //izquierda
-		eliminar(arbol->izq, n);
+		Eliminar(arbol->izq, n);
 	}
 	else if (n > arbol->dato) { //derecha
-		eliminar(arbol->der, n);
+		Eliminar(arbol->der, n);
 	}
 	else { //igual a n
-		eliminarNodo(arbol);
+		EliminarNodo(arbol);
+		cout << "Nodo eliminado correctamente!" << endl;
 	}
 }
 #pragma endregion
 
-
+//valida si un string es un numero
+bool ValidarNumero(string str)
+{
+	int i = 0;
+	while (str[i] != '\0') //'\0' es el character que marca el final del string
+	{
+		if (isdigit(str[i]) == false)
+		{
+			return false;
+		}
+		i++;
+	}
+	return true; //devuelve un str igual si no se encontraron letras
+}
 
 int main()
 {
 	int contador = 0;
-	string opcion;
+	string opcion, dato;
+	//arbol de prueba
+	int arbolPrueba[11] = { 10,5,15,20,12,30,8,3,9,6,7 };
+	for (int i = 0; i < sizeof(arbolPrueba) / sizeof(arbolPrueba[0]);i++) {
+		Insertar(arbol, arbolPrueba[i], NULL);
+	}
 
-	insertarNodo(arbol, 10, NULL);
-	insertarNodo(arbol, 5, NULL);
-	insertarNodo(arbol, 15, NULL);
-	insertarNodo(arbol, 20, NULL);
-	insertarNodo(arbol, 12, NULL);
-	insertarNodo(arbol, 30, NULL);
-	insertarNodo(arbol, 8, NULL);
-	insertarNodo(arbol, 3, NULL);
-	insertarNodo(arbol, 9, NULL);
-	insertarNodo(arbol, 6, NULL);
-	insertarNodo(arbol, 7, NULL);
-
-
+	cout << "Bienvenido!" << endl;
 
 	do {
-		cout << "(1)Insertar\n(2)Eliminar\n(3)Mostrar\n(4)Buscar\n(5)Recorrido (PreOrder)\n>>";
+		cout << "Que accion desea realizar sobre el Arbol Binario de Busqueda?" << endl;
+		cout << "(1)Insertar\n(2)Eliminar\n(3)Mostrar\n(4)Buscar\n(5)Recorrido (PreOrder)\n(6)Salir\n>>";
 		cin >> opcion;
+		if (!ValidarNumero(opcion)) {
+			cout << "Tipo de dato incorrecto, intente de nuevo" << endl;
+			opcion = "0";
+			system("PAUSE");
+			system("CLS");
+			continue;
+		}
 
 		switch (stoi(opcion)) {
 		case 1:
-			int dato;
 			cout << "Digite el numero que desea insertar: ";
 			cin >> dato;
+			if (!ValidarNumero(dato)) {
+				cout << "Solo se pueden insertar numeros, intente de nuevo" << endl;
+				break;
+			}
 
-			insertarNodo(arbol, dato, NULL);
+			Insertar(arbol, stoi(dato), NULL);
 			break;
 		case 2:
 			cout << "Digite el numero del nodo que desea eliminar: ";
 			cin >> dato;
-			eliminar(arbol, dato);
+			if (!ValidarNumero(dato)) {
+				cout << "Solo se pueden insertar numeros, intente de nuevo" << endl;
+				break;
+			}
+
+			Eliminar(arbol, stoi(dato));
+
 			break;
 		case 3:
-			mostrarArbol(arbol, contador);
-
+			MostrarArbol(arbol, contador);
 			break;
 		case 4:
 			cout << "Digite el numero que desea buscar en el arbol: ";
 			cin >> dato;
-			if (busqueda(arbol, dato)) {
-				cout << "El elemento ha sido encontrado en la lista" << endl;
+			if (!ValidarNumero(dato)) {
+				cout << "Solo se pueden insertar numeros, intente de nuevo" << endl;
+				break;
 			}
-			else {
-				cout << "Elemento no encontrado" << endl;
 
-			}
+			if (Busqueda(arbol, stoi(dato))) cout << "El elemento ha sido encontrado en la lista" << endl;
+			else cout << "Elemento no encontrado" << endl;
+
 			break;
 
 		case 5:
-			preOrder(arbol);
+			PreOrder(arbol);
+			cout << "FIN" << endl;
+			break;
+
+		case 6:
+			exit(0);
+			break;
+
+		default:
+			cout << "Opcion fuera del menu, intente de nuevo" << endl;
 			break;
 		}
 		system("PAUSE");
