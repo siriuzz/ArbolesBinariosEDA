@@ -1,5 +1,5 @@
 /*
-Enunciado: Realizar un programa C++ que permita gestionar un Árbol Binario de Búsqueda
+Enunciado: Realizar un programa C++ que permita gestionar un Árbol Binario de Búsqueda.
 
 Participantes:
 1- John Luis Del Rosario Sánchez - ID 1106940
@@ -113,7 +113,7 @@ Nodo* Minimo(Nodo* arbol) {
 //reemplaza las propiedades del nodo padre
 void Reemplazar(Nodo* arbol, Nodo* nuevoNodo) {
 	//si el nodo a eliminar tiene un padre
-	if (arbol->padre) { 
+	if (arbol->padre) {
 		if (arbol->padre->izq) { //se verifica que el padre tenga una rama a la izquierda
 			//si el dato de la rama izquierda del padre es igual al dato del arbol
 			if (arbol->dato == arbol->padre->izq->dato) {
@@ -129,7 +129,7 @@ void Reemplazar(Nodo* arbol, Nodo* nuevoNodo) {
 		}
 	}
 
-	if (nuevoNodo) { 
+	if (nuevoNodo) {
 		nuevoNodo->padre = arbol->padre;
 	}
 }
@@ -139,7 +139,7 @@ void DestruirNodo(Nodo* nodo) {
 	nodo->izq = NULL;
 	nodo->der = NULL;
 
-		 nodo;
+	nodo;
 }
 
 #pragma endregion
@@ -237,6 +237,10 @@ int main()
 			cout << "Numero agregado correctamente!" << endl;
 			break;
 		case 2: //Eliminar
+			if (arbol == NULL) {
+				cout << "El arbol esta vacio, inserte datos primero" << endl;
+				break;
+			}
 			cout << "Digite el numero del nodo que desea eliminar: ";
 			cin >> dato;
 			if (!ValidarNumero(dato)) {
@@ -245,12 +249,20 @@ int main()
 			}
 
 			Eliminar(arbol, stoi(dato));
-
 			break;
 		case 3: //Mostrar
+			if (arbol == NULL) {
+				cout << "El arbol esta vacio, inserte datos primero" << endl;
+				break;
+			}
+
 			MostrarArbol(arbol, contador);
 			break;
 		case 4: //Buscar
+			if (arbol == NULL) {
+				cout << "El arbol esta vacio, inserte datos primero" << endl;
+				break;
+			}
 			cout << "Digite el numero que desea buscar en el arbol: ";
 			cin >> dato;
 			if (!ValidarNumero(dato)) {
@@ -264,6 +276,11 @@ int main()
 			break;
 
 		case 5: //Recorrido preOrder
+			if (arbol == NULL) {
+				cout << "El arbol esta vacio, inserte datos primero" << endl;
+				break;
+			}
+
 			PreOrder(arbol);
 			cout << "FIN" << endl;
 			break;
