@@ -185,6 +185,14 @@ void Eliminar(Nodo* arbol, int n) {
 }
 #pragma endregion
 
+bool ArbolVacio() {
+	if (arbol == NULL) {
+		cout << "El arbol esta vacio, inserte datos primero" << endl;
+		return true;
+	}
+	return false;
+}
+
 //valida si un string es un numero
 bool ValidarNumero(string str)
 {
@@ -193,6 +201,7 @@ bool ValidarNumero(string str)
 	{
 		if (isdigit(str[i]) == false)
 		{
+			cout << "Solo se pueden insertar numeros (positivos), intente de nuevo" << endl;
 			return false;
 		}
 		i++;
@@ -217,7 +226,6 @@ int main()
 		cout << "(1)Insertar\n(2)Eliminar\n(3)Mostrar\n(4)Buscar\n(5)Recorrido (PreOrder)\n(6)Salir\n>>";
 		cin >> opcion;
 		if (!ValidarNumero(opcion)) {
-			cout << "Tipo de dato incorrecto, intente de nuevo" << endl;
 			opcion = "0";
 			system("PAUSE");
 			system("CLS");
@@ -228,47 +236,32 @@ int main()
 		case 1: //Insertar
 			cout << "Digite el numero que desea insertar: ";
 			cin >> dato;
-			if (!ValidarNumero(dato)) {
-				cout << "Solo se pueden insertar numeros (positivos), intente de nuevo" << endl;
-				break;
-			}
+			if (!ValidarNumero(dato)) break;
 
 			Insertar(arbol, stoi(dato), NULL);
 			cout << "Numero agregado correctamente!" << endl;
 			break;
 		case 2: //Eliminar
-			if (arbol == NULL) {
-				cout << "El arbol esta vacio, inserte datos primero" << endl;
-				break;
-			}
+			if (ArbolVacio()) break;
+
 			cout << "Digite el numero del nodo que desea eliminar: ";
 			cin >> dato;
-			if (!ValidarNumero(dato)) {
-				cout << "Solo se pueden insertar numeros, intente de nuevo" << endl;
-				break;
-			}
+
+			if (!ValidarNumero(dato)) break;
 
 			Eliminar(arbol, stoi(dato));
 			break;
 		case 3: //Mostrar
-			if (arbol == NULL) {
-				cout << "El arbol esta vacio, inserte datos primero" << endl;
-				break;
-			}
+			if (ArbolVacio()) break;
 
 			MostrarArbol(arbol, contador);
 			break;
 		case 4: //Buscar
-			if (arbol == NULL) {
-				cout << "El arbol esta vacio, inserte datos primero" << endl;
-				break;
-			}
+			if (ArbolVacio()) break;
+			
 			cout << "Digite el numero que desea buscar en el arbol: ";
 			cin >> dato;
-			if (!ValidarNumero(dato)) {
-				cout << "Solo se pueden insertar numeros, intente de nuevo" << endl;
-				break;
-			}
+			if (!ValidarNumero(dato)) break;
 
 			if (Busqueda(arbol, stoi(dato))) cout << "El elemento ha sido encontrado en la lista" << endl;
 			else cout << "Elemento no encontrado" << endl;
@@ -276,10 +269,7 @@ int main()
 			break;
 
 		case 5: //Recorrido preOrder
-			if (arbol == NULL) {
-				cout << "El arbol esta vacio, inserte datos primero" << endl;
-				break;
-			}
+			if (ArbolVacio()) break;
 
 			PreOrder(arbol);
 			cout << "FIN" << endl;
