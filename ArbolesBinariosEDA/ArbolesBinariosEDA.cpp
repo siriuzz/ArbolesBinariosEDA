@@ -87,8 +87,6 @@ void PreOrder(Nodo* arbol) {
 	}
 }
 
-
-
 #pragma region funciones auxialiares eliminar
 //busca el valor minimo de un arbol (recursivo)
 Nodo* Minimo(Nodo* arbol) {
@@ -131,8 +129,9 @@ void DestruirNodo(Nodo* nodo) {
 	nodo->izq = NULL;
 	nodo->der = NULL;
 
-	delete nodo;
+		 nodo;
 }
+
 #pragma endregion
 
 #pragma region eliminar nodo
@@ -171,7 +170,7 @@ void Eliminar(Nodo* arbol, int n) {
 	}
 	else { //igual a n
 		EliminarNodo(arbol);
-		cout << "Nodo eliminado correctamente!" << endl;
+		cout << "Nodo " << n << " eliminado correctamente!" << endl;
 	}
 }
 #pragma endregion
@@ -196,10 +195,10 @@ int main()
 	int contador = 0;
 	string opcion, dato;
 	//arbol de prueba
-	int arbolPrueba[11] = { 10,5,15,20,12,30,8,3,9,6,7 };
-	for (int i = 0; i < sizeof(arbolPrueba) / sizeof(arbolPrueba[0]);i++) {
-		Insertar(arbol, arbolPrueba[i], NULL);
-	}
+	//int arbolPrueba[11] = { 10,5,15,20,12,30,8,3,9,6,7 };
+	//for (int i = 0; i < sizeof(arbolPrueba) / sizeof(arbolPrueba[0]);i++) {
+	//	Insertar(arbol, arbolPrueba[i], NULL);
+	//}
 
 	cout << "Bienvenido!" << endl;
 
@@ -216,7 +215,7 @@ int main()
 		}
 
 		switch (stoi(opcion)) {
-		case 1:
+		case 1: //Insertar
 			cout << "Digite el numero que desea insertar: ";
 			cin >> dato;
 			if (!ValidarNumero(dato)) {
@@ -227,7 +226,7 @@ int main()
 			Insertar(arbol, stoi(dato), NULL);
 			cout << "Numero agregado correctamente!" << endl;
 			break;
-		case 2:
+		case 2: //Eliminar
 			cout << "Digite el numero del nodo que desea eliminar: ";
 			cin >> dato;
 			if (!ValidarNumero(dato)) {
@@ -238,10 +237,10 @@ int main()
 			Eliminar(arbol, stoi(dato));
 
 			break;
-		case 3:
+		case 3: //Mostrar
 			MostrarArbol(arbol, contador);
 			break;
-		case 4:
+		case 4: //Buscar
 			cout << "Digite el numero que desea buscar en el arbol: ";
 			cin >> dato;
 			if (!ValidarNumero(dato)) {
@@ -254,12 +253,12 @@ int main()
 
 			break;
 
-		case 5:
+		case 5: //Recorrido preOrder
 			PreOrder(arbol);
 			cout << "FIN" << endl;
 			break;
 
-		case 6:
+		case 6: //Salir
 			exit(0);
 			break;
 
